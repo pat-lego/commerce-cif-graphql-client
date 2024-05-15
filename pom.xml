@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.adobe.commerce.cif</groupId>
     <artifactId>graphql-client</artifactId>
-    <version>1.7.12-SNAPSHOT</version>
+    <version>1.7.11</version>
     <packaging>bundle</packaging>
 
     <name>Generic GraphQL client</name>
@@ -277,7 +277,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
+            <!-- <plugin>
                 <groupId>net.revelc.code.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
                 <version>2.16.0</version>
@@ -294,7 +294,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
 
             <plugin>
                 <groupId>net.revelc.code</groupId>

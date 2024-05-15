@@ -34,6 +34,8 @@ public @interface GraphqlClientConfiguration {
     int DEFAULT_CONNECTION_KEEP_ALIVE = -1;
     int DEFAULT_CONNECTION_TTL = -1;
 
+    int DEFAULT_RETRY_ATTEMPTS = 5;
+
     @AttributeDefinition(
         name = "GraphQL Service Identifier",
         description = "A unique identifier for this GraphQL client, used by the JCR resource property " + CQ_GRAPHQL_CLIENT
@@ -136,4 +138,9 @@ public @interface GraphqlClientConfiguration {
         description = "Integer value defining the ranking of this queue configuration. If more than one GraphQL Client use the same "
             + "identifier the one with the higher ranking will be used. Defaults to 0")
     int service_ranking() default 0;
+
+    @AttributeDefinition(
+        name = "GraphQL request retry count",
+        description = "A count used to determine the number of retry attempts that are required for the GraphQL client")
+    int retryCount() default DEFAULT_RETRY_ATTEMPTS;
 }

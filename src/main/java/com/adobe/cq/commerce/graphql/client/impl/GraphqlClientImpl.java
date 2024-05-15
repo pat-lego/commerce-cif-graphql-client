@@ -41,6 +41,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.ServiceUnavailableRetryStrategy;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -397,6 +399,35 @@ public class GraphqlClientImpl implements GraphqlClient {
             httpClientBuilder.setKeepAliveStrategy(new ConfigurableConnectionKeepAliveStrategy(configuration.connectionKeepAlive()));
         } // else reuse connections
 
+        httpClientBuilder.setRetryHandler(new HttpRequestRetryHandler() {
+            @Override
+            public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
+                LOGGER.debug("Received an exception of type {}", exception.getMessage());
+                if (executionCount <= configuration.retryCount()) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        httpClientBuilder.setServiceUnavailableRetryStrategy(new ServiceUnavailableRetryStrategy() {
+
+            @Override
+            public long getRetryInterval() {
+                // How long to wait in milliseconds
+                return 1000L;
+            }
+
+            @Override
+            public boolean retryRequest(HttpResponse response, int executionCount, HttpContext context) {
+                LOGGER.debug("Received a {} status code from upstream", response.getStatusLine().getStatusCode());
+                if (executionCount <= configuration.retryCount()) {
+                    return true;
+                }
+                return false;
+            }
+            
+        });
+        
         return httpClientBuilder;
     }
 

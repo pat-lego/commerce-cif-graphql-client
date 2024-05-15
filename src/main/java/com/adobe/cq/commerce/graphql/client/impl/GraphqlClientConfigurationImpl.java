@@ -37,6 +37,7 @@ class GraphqlClientConfigurationImpl implements Annotation, GraphqlClientConfigu
     private int connectionKeepAlive = GraphqlClientConfiguration.DEFAULT_CONNECTION_KEEP_ALIVE;
     private int connectionTtl = GraphqlClientConfiguration.DEFAULT_CONNECTION_TTL;
     private int serviceRanking = 0;
+    private int retryCount = 0;
 
     GraphqlClientConfigurationImpl(String url) {
         this.url = url;
@@ -57,6 +58,7 @@ class GraphqlClientConfigurationImpl implements Annotation, GraphqlClientConfigu
         connectionKeepAlive = configuration.connectionKeepAlive();
         connectionTtl = configuration.connectionTtl();
         serviceRanking = configuration.service_ranking();
+        retryCount = configuration.retryCount();
     }
 
     @Override
@@ -188,5 +190,10 @@ class GraphqlClientConfigurationImpl implements Annotation, GraphqlClientConfigu
 
     public void setServiceRanking(int serviceRanking) {
         this.serviceRanking = serviceRanking;
+    }
+
+    @Override
+    public int retryCount() {
+        return this.retryCount;
     }
 }
